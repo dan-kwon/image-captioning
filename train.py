@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 from torch.utils.tensorboard import SummaryWriter
 from utils import save_checkpoint, load_checkpoint, print_examples
 from get_loader import get_loader
-from model import CNNtoRNN
+from model import EncoderCNN, DecoderRNN, CNNtoRNN
 
 
 def train():
@@ -63,7 +63,7 @@ def train():
 
     for epoch in range(num_epochs):
         # Uncomment the line below to see a couple of test cases
-        # print_examples(model, device, dataset)
+        print_examples(model, device, dataset)
 
         if save_model:
             checkpoint = {

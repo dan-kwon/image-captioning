@@ -8,7 +8,7 @@ class EncoderCNN(nn.Module):
     def __init__(self, embed_size, train_CNN=False):
         super(EncoderCNN, self).__init__()
         self.train_CNN = train_CNN
-        self.inception = models.inception_v3(pretrained=True, aux_logits=False)
+        self.inception = models.inception_v3(weights="DEFAULT")
         self.inception.fc = nn.Linear(self.inception.fc.in_features, embed_size)
         self.relu = nn.ReLU()
         self.times = []
@@ -16,7 +16,7 @@ class EncoderCNN(nn.Module):
 
     def forward(self, images):
         features = self.inception(images)
-        return self.dropout(self.relu(features))
+        return self.dropout(self.relu(features[0]))
 
 
 class DecoderRNN(nn.Module):
@@ -56,7 +56,7 @@ class CNNtoRNN(nn.Module):
             for _ in range(max_length):
                 hiddens, states = self.decoderRNN.lstm(x, states)
                 output = self.decoderRNN.linear(hiddens.squeeze(0))
-                predicted = output.argmax(1)
+                predicted = torch.argmax(output) #.argmax(1)
                 result_caption.append(predicted.item())
                 x = self.decoderRNN.embed(predicted).unsqueeze(0)
 
