@@ -23,7 +23,7 @@ def train():
         root_folder="flickr8k/images",
         annotation_file="flickr8k/captions.txt",
         transform=transform,
-        num_workers=2,
+        num_workers=2, 
     )
 
     torch.backends.cudnn.benchmark = True
